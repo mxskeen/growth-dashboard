@@ -1,64 +1,47 @@
-/**
- * Charts initialization using Chart.js
- */
-
 let progressChart = null;
 let difficultyChart = null;
 
-/**
- * Initialize progress over time chart
- */
 function initProgressChart(data) {
     const ctx = document.getElementById('progressChart');
     if (!ctx) return;
     
-    // Prepare data
     const sortedData = [...data].sort((a, b) => a.date.localeCompare(b.date));
     
-    // Calculate cumulative problems
     let cumulative = 0;
     const cumulativeData = sortedData.map(entry => {
         cumulative += entry.problems_solved;
-        return {
-            x: entry.date,
-            y: cumulative,
-        };
+        return { x: entry.date, y: cumulative };
     });
     
-    // Daily problems
     const dailyData = sortedData.map(entry => ({
         x: entry.date,
         y: entry.problems_solved,
     }));
     
-    // Destroy existing chart
-    if (progressChart) {
-        progressChart.destroy();
-    }
+    if (progressChart) progressChart.destroy();
     
     progressChart = new Chart(ctx, {
         type: 'line',
         data: {
             datasets: [
                 {
-                    label: 'Cumulative Problems',
+                    label: 'Cumulative',
                     data: cumulativeData,
-                    borderColor: '#58a6ff',
-                    backgroundColor: 'rgba(88, 166, 255, 0.1)',
+                    borderColor: '#0a84ff',
+                    backgroundColor: 'rgba(10, 132, 255, 0.1)',
                     fill: true,
                     tension: 0.4,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
                 },
                 {
-                    label: 'Daily Problems',
+                    label: 'Daily',
                     data: dailyData,
-                    borderColor: '#3fb950',
-                    backgroundColor: 'rgba(63, 185, 80, 0.1)',
-                    fill: false,
+                    borderColor: '#30d158',
+                    backgroundColor: 'transparent',
                     tension: 0.4,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
                     yAxisID: 'y1',
                 },
             ],
@@ -74,44 +57,35 @@ function initProgressChart(data) {
                 legend: {
                     position: 'top',
                     labels: {
-                        color: '#8b949e',
+                        color: '#8e8e93',
                         usePointStyle: true,
+                        font: { size: 11 },
                     },
                 },
                 tooltip: {
-                    backgroundColor: '#21262d',
+                    backgroundColor: '#1c1c1e',
                     borderColor: 'rgba(255,255,255,0.1)',
                     borderWidth: 1,
-                    titleColor: '#f0f6fc',
-                    bodyColor: '#8b949e',
+                    titleColor: '#ffffff',
+                    bodyColor: '#8e8e93',
                 },
             },
             scales: {
                 x: {
                     type: 'category',
-                    ticks: { color: '#6e7681' },
-                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { color: '#636366', font: { size: 10 } },
+                    grid: { color: 'rgba(255,255,255,0.03)' },
                 },
                 y: {
                     type: 'linear',
                     position: 'left',
-                    title: {
-                        display: true,
-                        text: 'Cumulative',
-                        color: '#8b949e',
-                    },
-                    ticks: { color: '#6e7681' },
-                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { color: '#636366', font: { size: 10 } },
+                    grid: { color: 'rgba(255,255,255,0.03)' },
                 },
                 y1: {
                     type: 'linear',
                     position: 'right',
-                    title: {
-                        display: true,
-                        text: 'Daily',
-                        color: '#8b949e',
-                    },
-                    ticks: { color: '#6e7681' },
+                    ticks: { color: '#636366', font: { size: 10 } },
                     grid: { display: false },
                 },
             },
@@ -119,17 +93,11 @@ function initProgressChart(data) {
     });
 }
 
-/**
- * Initialize difficulty breakdown doughnut chart
- */
 function initDifficultyChart(stats) {
     const ctx = document.getElementById('difficultyChart');
     if (!ctx) return;
     
-    // Destroy existing chart
-    if (difficultyChart) {
-        difficultyChart.destroy();
-    }
+    if (difficultyChart) difficultyChart.destroy();
     
     difficultyChart = new Chart(ctx, {
         type: 'doughnut',
@@ -137,10 +105,10 @@ function initDifficultyChart(stats) {
             labels: ['Easy', 'Medium', 'Hard'],
             datasets: [{
                 data: [stats.easy_count, stats.medium_count, stats.hard_count],
-                backgroundColor: ['#3fb950', '#d29922', '#f85149'],
-                borderColor: '#1c2128',
-                borderWidth: 3,
-                hoverOffset: 10,
+                backgroundColor: ['#30d158', '#ff9f0a', '#ff453a'],
+                borderColor: '#1c1c1e',
+                borderWidth: 2,
+                hoverOffset: 8,
             }],
         },
         options: {
@@ -150,20 +118,21 @@ function initDifficultyChart(stats) {
                 legend: {
                     position: 'bottom',
                     labels: {
-                        color: '#8b949e',
+                        color: '#8e8e93',
                         usePointStyle: true,
-                        padding: 20,
+                        padding: 16,
+                        font: { size: 11 },
                     },
                 },
                 tooltip: {
-                    backgroundColor: '#21262d',
+                    backgroundColor: '#1c1c1e',
                     borderColor: 'rgba(255,255,255,0.1)',
                     borderWidth: 1,
-                    titleColor: '#f0f6fc',
-                    bodyColor: '#8b949e',
+                    titleColor: '#ffffff',
+                    bodyColor: '#8e8e93',
                 },
             },
-            cutout: '60%',
+            cutout: '65%',
         },
     });
 }

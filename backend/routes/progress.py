@@ -1,29 +1,24 @@
-"""Progress tracking routes."""
-
 import json
 from datetime import date
 from pathlib import Path
 from typing import Optional
 from fastapi import APIRouter, HTTPException
 
-from backend.models import ProgressEntry, Problem, HeatmapData, KnowledgeGraph, KnowledgeNode, KnowledgeEdge
+from backend.models import ProgressEntry, HeatmapData, KnowledgeGraph, KnowledgeNode, KnowledgeEdge
 
 router = APIRouter()
 
-# Data file path
 DATA_DIR = Path(__file__).parent.parent / "data"
 PROGRESS_FILE = DATA_DIR / "progress.json"
 
 
 def ensure_data_dir():
-    """Ensure data directory exists."""
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     if not PROGRESS_FILE.exists():
         PROGRESS_FILE.write_text("[]")
 
 
 def load_progress() -> list[dict]:
-    """Load progress data from file."""
     ensure_data_dir()
     try:
         return json.loads(PROGRESS_FILE.read_text())
@@ -32,7 +27,6 @@ def load_progress() -> list[dict]:
 
 
 def save_progress(data: list[dict]):
-    """Save progress data to file."""
     ensure_data_dir()
     PROGRESS_FILE.write_text(json.dumps(data, indent=2, default=str))
 
@@ -42,7 +36,6 @@ async def get_progress(
     start_date: Optional[date] = None,
     end_date: Optional[date] = None,
 ) -> list[dict]:
-    """Get all progress entries, optionally filtered by date range."""
     data = load_progress()
     
     if start_date:
@@ -55,10 +48,8 @@ async def get_progress(
 
 @router.post("/progress")
 async def add_progress(entry: ProgressEntry) -> dict:
-    """Add a new progress entry."""
     data = load_progress()
     
-    # Check if entry for this date already exists
     entry_dict = entry.model_dump(mode="json")
     existing_idx = next(
         (i for i, d in enumerate(data) if d.get("date") == str(entry.date)),
@@ -66,15 +57,12 @@ async def add_progress(entry: ProgressEntry) -> dict:
     )
     
     if existing_idx is not None:
-        # Update existing entry
         data[existing_idx] = entry_dict
-        message = "Progress entry updated"
+        message = "Progress updated"
     else:
-        # Add new entry
         data.append(entry_dict)
-        message = "Progress entry added"
+        message = "Progress added"
     
-    # Sort by date
     data.sort(key=lambda x: x.get("date", ""))
     save_progress(data)
     
@@ -83,7 +71,6 @@ async def add_progress(entry: ProgressEntry) -> dict:
 
 @router.delete("/progress/{date_str}")
 async def delete_progress(date_str: str) -> dict:
-    """Delete a progress entry by date."""
     data = load_progress()
     original_len = len(data)
     data = [d for d in data if d.get("date") != date_str]
@@ -97,7 +84,6 @@ async def delete_progress(date_str: str) -> dict:
 
 @router.get("/heatmap")
 async def get_heatmap() -> HeatmapData:
-    """Get heatmap data for activity visualization."""
     data = load_progress()
     heatmap = {}
     
@@ -105,7 +91,6 @@ async def get_heatmap() -> HeatmapData:
         date_str = entry.get("date", "")
         problems = entry.get("problems_solved", 0)
         hours = entry.get("study_hours", 0)
-        # Activity score: problems + hours (weighted)
         activity = problems + int(hours * 2)
         heatmap[date_str] = activity
     
@@ -114,10 +99,8 @@ async def get_heatmap() -> HeatmapData:
 
 @router.get("/knowledge-graph")
 async def get_knowledge_graph() -> KnowledgeGraph:
-    """Get knowledge graph data from progress."""
     data = load_progress()
     
-    # Build topic stats
     topic_stats: dict[str, dict] = {}
     for entry in data:
         for problem in entry.get("problems", []):
@@ -127,13 +110,9 @@ async def get_knowledge_graph() -> KnowledgeGraph:
             topic_stats[topic]["count"] += 1
             topic_stats[topic]["difficulties"].append(problem.get("difficulty", "easy"))
     
-    # Create nodes
     nodes = []
-    max_count = max((t["count"] for t in topic_stats.values()), default=1)
-    
     for topic, stats in topic_stats.items():
-        # Calculate mastery based on count and difficulty mix
-        mastery = min(stats["count"] / 10, 1.0)  # Cap at 10 problems per topic
+        mastery = min(stats["count"] / 10, 1.0)
         hard_ratio = stats["difficulties"].count("hard") / len(stats["difficulties"]) if stats["difficulties"] else 0
         mastery = min(mastery + hard_ratio * 0.3, 1.0)
         
@@ -145,8 +124,6 @@ async def get_knowledge_graph() -> KnowledgeGraph:
             problems_solved=stats["count"],
         ))
     
-    # Create edges between related topics
-    # For now, simple heuristic: topics that appear in same day's entries are connected
     edges = []
     topic_pairs: dict[tuple, int] = {}
     

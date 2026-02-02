@@ -3,33 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Growth Dashboard | Maskeen's FAANG Journey</title>
-    <meta name="description" content="Track your growth journey to FAANG with beautiful visualizations">
-    
-    <!-- Fonts -->
+    <title>Growth Dashboard</title>
+    <meta name="description" content="Personal growth tracking dashboard">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Chart.js -->
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Three.js for 3D -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
-    <!-- Styles -->
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div class="app">
-        <!-- Header -->
         <header class="header">
             <div class="header-content">
-                <h1 class="logo">
-                    <span class="logo-icon">🧠</span>
-                    Growth Dashboard
-                </h1>
-                <p class="tagline">Tracking the journey to FAANG</p>
+                <h1 class="logo">Growth Dashboard</h1>
+                <p class="tagline">Track your progress</p>
             </div>
             <div class="header-stats">
                 <div class="stat-card mini">
@@ -47,12 +35,10 @@
             </div>
         </header>
 
-        <!-- Main Content -->
         <main class="main">
-            <!-- Goal Tracker Section -->
             <section class="goal-section">
                 <div class="chart-card full goal-card">
-                    <h2 class="card-title">🎯 Goal: 50 Problems in 30 Days</h2>
+                    <h2 class="card-title">Goal: 50 Problems in 30 Days</h2>
                     <div class="goal-content">
                         <div class="goal-progress">
                             <div class="goal-circle" id="goal-circle">
@@ -80,39 +66,38 @@
                                 <span class="goal-stat-label">Current Pace</span>
                             </div>
                             <div class="goal-stat">
-                                <span class="goal-stat-value" id="prediction">—</span>
-                                <span class="goal-stat-label">Predicted Finish</span>
+                                <span class="goal-stat-value" id="prediction">-</span>
+                                <span class="goal-stat-label">Status</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Stats Row -->
             <section class="stats-row">
                 <div class="stat-card">
-                    <div class="stat-icon easy">📗</div>
+                    <div class="stat-icon easy"></div>
                     <div class="stat-content">
                         <span class="stat-value" id="easy-count">0</span>
                         <span class="stat-label">Easy</span>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon medium">📙</div>
+                    <div class="stat-icon medium"></div>
                     <div class="stat-content">
                         <span class="stat-value" id="medium-count">0</span>
                         <span class="stat-label">Medium</span>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon hard">📕</div>
+                    <div class="stat-icon hard"></div>
                     <div class="stat-content">
                         <span class="stat-value" id="hard-count">0</span>
                         <span class="stat-label">Hard</span>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon topics">🎯</div>
+                    <div class="stat-icon topics"></div>
                     <div class="stat-content">
                         <span class="stat-value" id="topics-count">0</span>
                         <span class="stat-label">Topics</span>
@@ -120,17 +105,13 @@
                 </div>
             </section>
 
-            <!-- Charts Row -->
             <section class="charts-row">
-                <!-- Progress Chart -->
                 <div class="chart-card">
                     <h2 class="card-title">Progress Over Time</h2>
                     <div class="chart-container">
                         <canvas id="progressChart"></canvas>
                     </div>
                 </div>
-
-                <!-- Difficulty Breakdown -->
                 <div class="chart-card small">
                     <h2 class="card-title">Difficulty Breakdown</h2>
                     <div class="chart-container">
@@ -139,18 +120,16 @@
                 </div>
             </section>
 
-            <!-- Topic Progress Section -->
             <section class="topics-section">
                 <div class="chart-card full">
-                    <h2 class="card-title">📊 Topic Progress</h2>
+                    <h2 class="card-title">Topic Progress</h2>
                     <p class="card-subtitle">Track your mastery across DSA patterns</p>
                     <div class="topics-grid" id="topics-grid">
-                        <p class="empty-state">Solve problems to track topic progress!</p>
+                        <p class="empty-state">Solve problems to track topic progress</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Heatmap Section -->
             <section class="heatmap-section">
                 <div class="chart-card full">
                     <h2 class="card-title">Activity Heatmap</h2>
@@ -169,19 +148,17 @@
                 </div>
             </section>
 
-            <!-- Knowledge Graph Section -->
             <section class="knowledge-section">
                 <div class="chart-card full">
                     <h2 class="card-title">Knowledge Graph</h2>
-                    <p class="card-subtitle">Topics and their connections based on your learning</p>
+                    <p class="card-subtitle">Topics and their connections</p>
                     <div class="knowledge-container" id="knowledge-graph"></div>
                 </div>
             </section>
 
-            <!-- Log Progress Form -->
             <section class="form-section">
                 <div class="chart-card full">
-                    <h2 class="card-title">➕ Log Progress</h2>
+                    <h2 class="card-title">Log Progress</h2>
                     <form id="progress-form" class="progress-form">
                         <div class="form-row">
                             <div class="form-group">
@@ -225,8 +202,8 @@
                                 <input type="number" id="study-hours" step="0.5" min="0" max="24" placeholder="0.5">
                             </div>
                             <div class="form-group flex-2">
-                                <label for="notes">Notes (optional)</label>
-                                <input type="text" id="notes" placeholder="Any learnings or struggles...">
+                                <label for="notes">Notes</label>
+                                <input type="text" id="notes" placeholder="Optional notes...">
                             </div>
                         </div>
                         <button type="submit" class="submit-btn">Log Problem</button>
@@ -235,24 +212,21 @@
                 </div>
             </section>
 
-            <!-- Recent Activity -->
             <section class="activity-section">
                 <div class="chart-card full">
                     <h2 class="card-title">Recent Activity</h2>
                     <div class="activity-list" id="activity-list">
-                        <p class="empty-state">No activity yet. Start solving problems!</p>
+                        <p class="empty-state">No activity yet</p>
                     </div>
                 </div>
             </section>
         </main>
 
-        <!-- Footer -->
         <footer class="footer">
-            <p>Built with 🥧 by Son of Anton | <a href="/docs" target="_blank">API Docs</a></p>
+            <p>Built by Son of Anton for Maskeen</p>
         </footer>
     </div>
 
-    <!-- Scripts -->
     <script src="/static/js/app.js"></script>
     <script src="/static/js/charts.js"></script>
     <script src="/static/js/heatmap.js"></script>

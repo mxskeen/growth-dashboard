@@ -1,5 +1,3 @@
-"""Stats and analytics routes."""
-
 from datetime import date, timedelta
 from fastapi import APIRouter
 
@@ -10,11 +8,9 @@ router = APIRouter()
 
 
 def calculate_streak(dates: list[str]) -> tuple[int, int]:
-    """Calculate current and longest streak from sorted date strings."""
     if not dates:
         return 0, 0
     
-    # Parse and sort dates
     parsed_dates = sorted([date.fromisoformat(d) for d in dates])
     
     current_streak = 0
@@ -24,7 +20,6 @@ def calculate_streak(dates: list[str]) -> tuple[int, int]:
     today = date.today()
     yesterday = today - timedelta(days=1)
     
-    # Check if most recent date is today or yesterday
     if parsed_dates and parsed_dates[-1] >= yesterday:
         current_streak = 1
     
@@ -45,7 +40,6 @@ def calculate_streak(dates: list[str]) -> tuple[int, int]:
 
 @router.get("/stats")
 async def get_stats() -> ProgressStats:
-    """Get aggregated statistics."""
     data = load_progress()
     
     total_problems = 0
@@ -94,15 +88,11 @@ async def get_stats() -> ProgressStats:
 
 @router.get("/stats/weekly")
 async def get_weekly_stats() -> dict:
-    """Get stats for the past week."""
     data = load_progress()
     today = date.today()
     week_ago = today - timedelta(days=7)
     
-    weekly_data = [
-        d for d in data 
-        if d.get("date", "") >= str(week_ago)
-    ]
+    weekly_data = [d for d in data if d.get("date", "") >= str(week_ago)]
     
     problems_by_day = {}
     for d in weekly_data:

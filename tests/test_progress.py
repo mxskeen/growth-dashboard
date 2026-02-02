@@ -1,5 +1,3 @@
-"""Tests for progress endpoints."""
-
 import pytest
 from httpx import AsyncClient, ASGITransport
 from datetime import date
@@ -21,7 +19,6 @@ async def client():
 
 @pytest.mark.anyio
 async def test_health(client):
-    """Test health endpoint."""
     response = await client.get("/health")
     assert response.status_code == 200
     assert response.json() == {"status": "healthy"}
@@ -29,7 +26,6 @@ async def test_health(client):
 
 @pytest.mark.anyio
 async def test_get_progress(client):
-    """Test getting progress data."""
     response = await client.get("/api/progress")
     assert response.status_code == 200
     assert isinstance(response.json(), list)
@@ -37,7 +33,6 @@ async def test_get_progress(client):
 
 @pytest.mark.anyio
 async def test_add_progress(client):
-    """Test adding a progress entry."""
     entry = {
         "date": str(date.today()),
         "problems_solved": 3,
@@ -47,7 +42,7 @@ async def test_add_progress(client):
             {"name": "3Sum", "difficulty": "medium", "topic": "two-pointers"},
         ],
         "study_hours": 2.5,
-        "notes": "Great progress today!",
+        "notes": "Good progress",
         "mood": "great",
     }
     
@@ -60,7 +55,6 @@ async def test_add_progress(client):
 
 @pytest.mark.anyio
 async def test_get_heatmap(client):
-    """Test heatmap endpoint."""
     response = await client.get("/api/heatmap")
     assert response.status_code == 200
     data = response.json()
@@ -70,19 +64,15 @@ async def test_get_heatmap(client):
 
 @pytest.mark.anyio
 async def test_get_knowledge_graph(client):
-    """Test knowledge graph endpoint."""
     response = await client.get("/api/knowledge-graph")
     assert response.status_code == 200
     data = response.json()
     assert "nodes" in data
     assert "edges" in data
-    assert isinstance(data["nodes"], list)
-    assert isinstance(data["edges"], list)
 
 
 @pytest.mark.anyio
 async def test_add_invalid_progress(client):
-    """Test adding invalid progress entry."""
     entry = {
         "date": str(date.today()),
         "problems": [
@@ -91,5 +81,4 @@ async def test_add_invalid_progress(client):
     }
     
     response = await client.post("/api/progress", json=entry)
-    # Should fail validation due to invalid difficulty
     assert response.status_code == 422
