@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growth Dashboard | Maskeen's FAANG Journey</title>
+    <meta name="description" content="Track your growth journey to FAANG with beautiful visualizations">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Three.js for 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">
+                    <span class="logo-icon">🧠</span>
+                    Growth Dashboard
+                </h1>
+                <p class="tagline">Tracking the journey to FAANG</p>
+            </div>
+            <div class="header-stats">
+                <div class="stat-card mini">
+                    <span class="stat-value" id="total-problems">0</span>
+                    <span class="stat-label">Problems</span>
+                </div>
+                <div class="stat-card mini">
+                    <span class="stat-value" id="current-streak">0</span>
+                    <span class="stat-label">Day Streak</span>
+                </div>
+                <div class="stat-card mini">
+                    <span class="stat-value" id="total-hours">0</span>
+                    <span class="stat-label">Hours</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Stats Row -->
+            <section class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon easy">📗</div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="easy-count">0</span>
+                        <span class="stat-label">Easy</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon medium">📙</div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="medium-count">0</span>
+                        <span class="stat-label">Medium</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon hard">📕</div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="hard-count">0</span>
+                        <span class="stat-label">Hard</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon topics">🎯</div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="topics-count">0</span>
+                        <span class="stat-label">Topics</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Row -->
+            <section class="charts-row">
+                <!-- Progress Chart -->
+                <div class="chart-card">
+                    <h2 class="card-title">Progress Over Time</h2>
+                    <div class="chart-container">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Difficulty Breakdown -->
+                <div class="chart-card small">
+                    <h2 class="card-title">Difficulty Breakdown</h2>
+                    <div class="chart-container">
+                        <canvas id="difficultyChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Heatmap Section -->
+            <section class="heatmap-section">
+                <div class="chart-card full">
+                    <h2 class="card-title">Activity Heatmap</h2>
+                    <div class="heatmap-container" id="heatmap"></div>
+                    <div class="heatmap-legend">
+                        <span>Less</span>
+                        <div class="legend-blocks">
+                            <div class="legend-block" style="background: var(--heatmap-0)"></div>
+                            <div class="legend-block" style="background: var(--heatmap-1)"></div>
+                            <div class="legend-block" style="background: var(--heatmap-2)"></div>
+                            <div class="legend-block" style="background: var(--heatmap-3)"></div>
+                            <div class="legend-block" style="background: var(--heatmap-4)"></div>
+                        </div>
+                        <span>More</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Knowledge Graph Section -->
+            <section class="knowledge-section">
+                <div class="chart-card full">
+                    <h2 class="card-title">Knowledge Graph</h2>
+                    <p class="card-subtitle">Topics and their connections based on your learning</p>
+                    <div class="knowledge-container" id="knowledge-graph"></div>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="activity-section">
+                <div class="chart-card full">
+                    <h2 class="card-title">Recent Activity</h2>
+                    <div class="activity-list" id="activity-list">
+                        <p class="empty-state">No activity yet. Start solving problems!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Built with 🥧 by Son of Anton | <a href="/docs" target="_blank">API Docs</a></p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/charts.js"></script>
+    <script src="/static/js/heatmap.js"></script>
+    <script src="/static/js/knowledge-graph.js"></script>
+</body>
+</html>
