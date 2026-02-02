@@ -81,6 +81,7 @@ async function initDashboard() {
     
     if (knowledgeGraph) {
         initKnowledgeGraph(knowledgeGraph);
+        initTopicProgress(knowledgeGraph);
     }
     
     // Setup form handler
@@ -223,3 +224,71 @@ function formatDate(dateStr) {
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', initDashboard);
+
+/**
+ * Initialize topic progress bars
+ */
+function initTopicProgress(graphData) {
+    const container = document.getElementById('topics-grid');
+    if (!container) return;
+    
+    if (!graphData.nodes || graphData.nodes.length === 0) {
+        container.innerHTML = '<p class="empty-state">Solve problems to track topic progress!</p>';
+        return;
+    }
+    
+    // Sort by problems solved descending
+    const sorted = [...graphData.nodes].sort((a, b) => b.problems_solved - a.problems_solved);
+    
+    // Define all DSA topics with targets
+    const allTopics = {
+        'arrays': { target: 15, label: 'Arrays & Hashing' },
+        'hash-table': { target: 10, label: 'Hash Table' },
+        'two-pointers': { target: 10, label: 'Two Pointers' },
+        'sliding-window': { target: 8, label: 'Sliding Window' },
+        'stack': { target: 8, label: 'Stack' },
+        'binary-search': { target: 10, label: 'Binary Search' },
+        'linked-list': { target: 8, label: 'Linked List' },
+        'trees': { target: 15, label: 'Trees' },
+        'tries': { target: 5, label: 'Tries' },
+        'heap': { target: 8, label: 'Heap / Priority Queue' },
+        'backtracking': { target: 8, label: 'Backtracking' },
+        'graphs': { target: 15, label: 'Graphs' },
+        'dynamic-programming': { target: 20, label: 'Dynamic Programming' },
+        'greedy': { target: 8, label: 'Greedy' },
+        'intervals': { target: 6, label: 'Intervals' },
+        'math': { target: 5, label: 'Math' },
+        'bit-manipulation': { target: 5, label: 'Bit Manipulation' },
+    };
+    
+    // Merge existing progress with all topics
+    const topicProgress = {};
+    for (const [id, info] of Object.entries(allTopics)) {
+        const node = sorted.find(n => n.id === id);
+        topicProgress[id] = {
+            ...info,
+            solved: node ? node.problems_solved : 0,
+            mastery: node ? node.mastery : 0,
+        };
+    }
+    
+    // Render progress bars
+    container.innerHTML = Object.entries(topicProgress)
+        .sort((a, b) => b[1].solved - a[1].solved)
+        .map(([id, data]) => {
+            const percent = Math.min((data.solved / data.target) * 100, 100);
+            const level = percent < 25 ? 1 : percent < 50 ? 2 : percent < 75 ? 3 : 4;
+            
+            return `
+                <div class="topic-item">
+                    <div class="topic-header">
+                        <span class="topic-name">${data.label}</span>
+                        <span class="topic-count">${data.solved}/${data.target}</span>
+                    </div>
+                    <div class="topic-progress-bar">
+                        <div class="topic-progress-fill level-${level}" style="width: ${percent}%"></div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+}

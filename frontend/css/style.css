@@ -509,6 +509,62 @@ body::before {
 }
 
 /* ===========================
+   TOPIC PROGRESS
+   =========================== */
+.topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-md);
+}
+
+.topic-item {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    transition: transform var(--transition-fast);
+}
+
+.topic-item:hover {
+    transform: translateY(-2px);
+}
+
+.topic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-sm);
+}
+
+.topic-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: capitalize;
+}
+
+.topic-count {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.topic-progress-bar {
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.topic-progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width var(--transition-slow);
+}
+
+.topic-progress-fill.level-1 { background: var(--heatmap-1); }
+.topic-progress-fill.level-2 { background: var(--heatmap-2); }
+.topic-progress-fill.level-3 { background: var(--heatmap-3); }
+.topic-progress-fill.level-4 { background: var(--heatmap-4); }
+
+/* ===========================
    RESPONSIVE
    =========================== */
 @media (max-width: 768px) {
