@@ -7,6 +7,7 @@ const API_BASE = '/api';
 // State
 let progressData = [];
 let statsData = null;
+let todayProblems = []; // Track problems added today
 
 /**
  * Fetch data from API
@@ -19,6 +20,24 @@ async function fetchData(endpoint) {
     } catch (error) {
         console.error(`Error fetching ${endpoint}:`, error);
         return null;
+    }
+}
+
+/**
+ * Post data to API
+ */
+async function postData(endpoint, data) {
+    try {
+        const response = await fetch(`${API_BASE}${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return await response.json();
+    } catch (error) {
+        console.error(`Error posting to ${endpoint}:`, error);
+        throw error;
     }
 }
 
@@ -39,6 +58,13 @@ async function initDashboard() {
     progressData = progress || [];
     statsData = stats;
     
+    // Load today's problems from existing data
+    const today = new Date().toISOString().split('T')[0];
+    const todayEntry = progressData.find(p => p.date === today);
+    if (todayEntry) {
+        todayProblems = todayEntry.problems || [];
+    }
+    
     // Update UI
     updateStats(stats);
     updateActivityList(progressData);
@@ -57,7 +83,79 @@ async function initDashboard() {
         initKnowledgeGraph(knowledgeGraph);
     }
     
+    // Setup form handler
+    setupFormHandler();
+    
     console.log('✅ Dashboard initialized');
+}
+
+/**
+ * Setup form submission handler
+ */
+function setupFormHandler() {
+    const form = document.getElementById('progress-form');
+    const messageEl = document.getElementById('form-message');
+    
+    if (!form) return;
+    
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const problemName = document.getElementById('problem-name').value.trim();
+        const difficulty = document.getElementById('difficulty').value;
+        const topic = document.getElementById('topic').value;
+        const studyHours = parseFloat(document.getElementById('study-hours').value) || 0;
+        const notes = document.getElementById('notes').value.trim();
+        
+        if (!problemName) {
+            showMessage(messageEl, 'Please enter a problem name', 'error');
+            return;
+        }
+        
+        // Add to today's problems
+        todayProblems.push({
+            name: problemName,
+            difficulty: difficulty,
+            topic: topic,
+        });
+        
+        const today = new Date().toISOString().split('T')[0];
+        const entry = {
+            date: today,
+            problems_solved: todayProblems.length,
+            problems: todayProblems,
+            study_hours: studyHours,
+            notes: notes || null,
+            mood: 'good',
+        };
+        
+        try {
+            await postData('/progress', entry);
+            showMessage(messageEl, `✅ Logged: ${problemName} (${difficulty})`, 'success');
+            
+            // Clear form (except study hours)
+            document.getElementById('problem-name').value = '';
+            document.getElementById('notes').value = '';
+            
+            // Refresh dashboard
+            setTimeout(() => {
+                initDashboard();
+            }, 500);
+        } catch (error) {
+            showMessage(messageEl, '❌ Failed to log progress', 'error');
+        }
+    });
+}
+
+/**
+ * Show form message
+ */
+function showMessage(el, text, type) {
+    el.textContent = text;
+    el.className = `form-message ${type}`;
+    setTimeout(() => {
+        el.className = 'form-message';
+    }, 3000);
 }
 
 /**

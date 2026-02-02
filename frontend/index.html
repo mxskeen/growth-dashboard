@@ -128,6 +128,63 @@
                 </div>
             </section>
 
+            <!-- Log Progress Form -->
+            <section class="form-section">
+                <div class="chart-card full">
+                    <h2 class="card-title">➕ Log Progress</h2>
+                    <form id="progress-form" class="progress-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="problem-name">Problem Name</label>
+                                <input type="text" id="problem-name" placeholder="e.g., Two Sum" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="difficulty">Difficulty</label>
+                                <select id="difficulty" required>
+                                    <option value="easy">Easy</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="hard">Hard</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="topic">Topic</label>
+                                <select id="topic" required>
+                                    <option value="arrays">Arrays</option>
+                                    <option value="hash-table">Hash Table</option>
+                                    <option value="two-pointers">Two Pointers</option>
+                                    <option value="sliding-window">Sliding Window</option>
+                                    <option value="stack">Stack</option>
+                                    <option value="binary-search">Binary Search</option>
+                                    <option value="linked-list">Linked List</option>
+                                    <option value="trees">Trees</option>
+                                    <option value="tries">Tries</option>
+                                    <option value="heap">Heap</option>
+                                    <option value="backtracking">Backtracking</option>
+                                    <option value="graphs">Graphs</option>
+                                    <option value="dynamic-programming">Dynamic Programming</option>
+                                    <option value="greedy">Greedy</option>
+                                    <option value="intervals">Intervals</option>
+                                    <option value="math">Math</option>
+                                    <option value="bit-manipulation">Bit Manipulation</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="study-hours">Study Hours</label>
+                                <input type="number" id="study-hours" step="0.5" min="0" max="24" placeholder="0.5">
+                            </div>
+                            <div class="form-group flex-2">
+                                <label for="notes">Notes (optional)</label>
+                                <input type="text" id="notes" placeholder="Any learnings or struggles...">
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn">Log Problem</button>
+                    </form>
+                    <div id="form-message" class="form-message"></div>
+                </div>
+            </section>
+
             <!-- Recent Activity -->
             <section class="activity-section">
                 <div class="chart-card full">

@@ -401,6 +401,114 @@ body::before {
 }
 
 /* ===========================
+   FORMS
+   =========================== */
+.form-section {
+    margin-bottom: var(--space-xl);
+}
+
+.progress-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.form-row {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.form-group.flex-2 {
+    flex: 2;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: var(--font-family);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+}
+
+.form-group input::placeholder {
+    color: var(--text-muted);
+}
+
+.form-group select {
+    cursor: pointer;
+}
+
+.submit-btn {
+    align-self: flex-start;
+    padding: var(--space-sm) var(--space-xl);
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.form-message {
+    margin-top: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    display: none;
+}
+
+.form-message.success {
+    display: block;
+    background: rgba(63, 185, 80, 0.1);
+    color: var(--accent-success);
+    border: 1px solid rgba(63, 185, 80, 0.3);
+}
+
+.form-message.error {
+    display: block;
+    background: rgba(248, 81, 73, 0.1);
+    color: var(--accent-danger);
+    border: 1px solid rgba(248, 81, 73, 0.3);
+}
+
+/* ===========================
    RESPONSIVE
    =========================== */
 @media (max-width: 768px) {
@@ -415,5 +523,13 @@ body::before {
     
     .heatmap-container {
         grid-template-columns: repeat(26, 1fr);
+    }
+    
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .form-group {
+        min-width: 100%;
     }
 }
