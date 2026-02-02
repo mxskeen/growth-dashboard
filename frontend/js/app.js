@@ -65,6 +65,9 @@ async function initDashboard() {
         todayProblems = todayEntry.problems || [];
     }
     
+    // Update goal tracker
+    updateGoalTracker(stats);
+    
     // Update UI
     updateStats(stats);
     updateActivityList(progressData);
@@ -224,6 +227,73 @@ function formatDate(dateStr) {
 
 // Initialize on load
 document.addEventListener('DOMContentLoaded', initDashboard);
+
+/**
+ * Update goal tracker
+ */
+function updateGoalTracker(stats) {
+    if (!stats) return;
+    
+    const goal = 50;
+    const startDate = new Date('2026-02-02');
+    const endDate = new Date('2026-03-04');
+    const today = new Date();
+    
+    const totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+    const daysElapsed = Math.max(1, Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)));
+    const daysRemaining = Math.max(0, Math.ceil((endDate - today) / (1000 * 60 * 60 * 24)));
+    
+    const current = stats.total_problems;
+    const remaining = Math.max(0, goal - current);
+    const dailyNeeded = daysRemaining > 0 ? (remaining / daysRemaining).toFixed(1) : '—';
+    const currentPace = (current / daysElapsed).toFixed(1);
+    
+    // Calculate predicted finish date
+    let prediction = '—';
+    if (current > 0 && parseFloat(currentPace) > 0) {
+        const daysToFinish = Math.ceil(remaining / parseFloat(currentPace));
+        const finishDate = new Date(today);
+        finishDate.setDate(finishDate.getDate() + daysToFinish);
+        
+        if (current >= goal) {
+            prediction = '✅ Done!';
+        } else if (finishDate <= endDate) {
+            prediction = '🎯 On track';
+        } else {
+            prediction = finishDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+    }
+    
+    // Update DOM
+    document.getElementById('goal-current').textContent = current;
+    document.getElementById('days-remaining').textContent = daysRemaining;
+    document.getElementById('daily-needed').textContent = dailyNeeded;
+    document.getElementById('current-pace').textContent = currentPace;
+    document.getElementById('prediction').textContent = prediction;
+    
+    // Update circle progress
+    const percent = Math.min((current / goal) * 100, 100);
+    const circumference = 283; // 2 * PI * 45
+    const offset = circumference - (percent / 100) * circumference;
+    
+    const fillEl = document.getElementById('goal-fill');
+    if (fillEl) {
+        fillEl.style.strokeDashoffset = offset;
+        
+        // Add gradient definition if not exists
+        const svg = fillEl.closest('svg');
+        if (svg && !svg.querySelector('#goalGradient')) {
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            defs.innerHTML = `
+                <linearGradient id="goalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#667eea"/>
+                    <stop offset="100%" style="stop-color:#764ba2"/>
+                </linearGradient>
+            `;
+            svg.insertBefore(defs, svg.firstChild);
+        }
+    }
+}
 
 /**
  * Initialize topic progress bars

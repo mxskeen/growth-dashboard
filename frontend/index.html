@@ -49,6 +49,45 @@
 
         <!-- Main Content -->
         <main class="main">
+            <!-- Goal Tracker Section -->
+            <section class="goal-section">
+                <div class="chart-card full goal-card">
+                    <h2 class="card-title">🎯 Goal: 50 Problems in 30 Days</h2>
+                    <div class="goal-content">
+                        <div class="goal-progress">
+                            <div class="goal-circle" id="goal-circle">
+                                <svg viewBox="0 0 100 100">
+                                    <circle class="goal-bg" cx="50" cy="50" r="45"/>
+                                    <circle class="goal-fill" cx="50" cy="50" r="45" id="goal-fill"/>
+                                </svg>
+                                <div class="goal-text">
+                                    <span class="goal-current" id="goal-current">0</span>
+                                    <span class="goal-target">/ 50</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="goal-stats">
+                            <div class="goal-stat">
+                                <span class="goal-stat-value" id="days-remaining">30</span>
+                                <span class="goal-stat-label">Days Left</span>
+                            </div>
+                            <div class="goal-stat">
+                                <span class="goal-stat-value" id="daily-needed">1.7</span>
+                                <span class="goal-stat-label">Per Day Needed</span>
+                            </div>
+                            <div class="goal-stat">
+                                <span class="goal-stat-value" id="current-pace">0</span>
+                                <span class="goal-stat-label">Current Pace</span>
+                            </div>
+                            <div class="goal-stat">
+                                <span class="goal-stat-value" id="prediction">—</span>
+                                <span class="goal-stat-label">Predicted Finish</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Stats Row -->
             <section class="stats-row">
                 <div class="stat-card">

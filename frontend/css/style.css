@@ -589,3 +589,108 @@ body::before {
         min-width: 100%;
     }
 }
+
+/* ===========================
+   GOAL TRACKER
+   =========================== */
+.goal-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(88, 166, 255, 0.05) 100%);
+}
+
+.goal-content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xl);
+    flex-wrap: wrap;
+}
+
+.goal-progress {
+    flex-shrink: 0;
+}
+
+.goal-circle {
+    position: relative;
+    width: 180px;
+    height: 180px;
+}
+
+.goal-circle svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.goal-circle circle {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: round;
+}
+
+.goal-bg {
+    stroke: var(--bg-tertiary);
+}
+
+.goal-fill {
+    stroke: url(#goalGradient);
+    stroke-dasharray: 283;
+    stroke-dashoffset: 283;
+    transition: stroke-dashoffset 1s ease;
+}
+
+.goal-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.goal-current {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: block;
+}
+
+.goal-target {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.goal-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+    flex: 1;
+}
+
+.goal-stat {
+    text-align: center;
+    padding: var(--space-md);
+    background: var(--glass-bg);
+    border-radius: var(--radius-md);
+}
+
+.goal-stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    display: block;
+}
+
+.goal-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+    .goal-content {
+        flex-direction: column;
+    }
+    
+    .goal-stats {
+        width: 100%;
+    }
+}
