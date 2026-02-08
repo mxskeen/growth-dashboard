@@ -12,11 +12,31 @@ class Problem(BaseModel):
     notes: Optional[str] = None
 
 
+class TrainingEntry(BaseModel):
+    type: str = Field(..., pattern="^(bodyweight|sprints|lifting|hiit|sports|rest)$")
+    duration_minutes: int
+    exercises: list[str] = []
+    notes: Optional[str] = None
+
+
+class DailyMetrics(BaseModel):
+    sleep_quality: int = Field(..., ge=1, le=10)
+    energy_level: int = Field(..., ge=1, le=10)
+    motivation: int = Field(..., ge=1, le=10)
+    social_anxiety: int = Field(..., ge=1, le=10)
+    morning_wood: bool = False
+    social_interaction: bool = False
+    win_count: int = 0
+
+
 class ProgressEntry(BaseModel):
     date: date
     problems_solved: int = 0
     problems: list[Problem] = []
     study_hours: float = 0.0
+    training: Optional[TrainingEntry] = None
+    metrics: Optional[DailyMetrics] = None
+    supplement_stack: list[str] = []
     notes: Optional[str] = None
     mood: Optional[str] = None
 

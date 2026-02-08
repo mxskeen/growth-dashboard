@@ -105,3 +105,79 @@ async def get_weekly_stats() -> dict:
         "total_hours": sum(d.get("study_hours", 0) for d in weekly_data),
         "days_active": len(weekly_data),
     }
+
+
+@router.get("/stats/training")
+async def get_training_stats() -> dict:
+    data = load_progress()
+    
+    training_days = 0
+    rest_days = 0
+    total_training_minutes = 0
+    training_by_type = {}
+    
+    for entry in data:
+        training = entry.get("training")
+        if training:
+            training_type = training.get("type", "rest")
+            duration = training.get("duration_minutes", 0)
+            
+            if training_type == "rest":
+                rest_days += 1
+            else:
+                training_days += 1
+                total_training_minutes += duration
+                training_by_type[training_type] = training_by_type.get(training_type, 0) + 1
+    
+    return {
+        "training_days": training_days,
+        "rest_days": rest_days,
+        "total_training_hours": round(total_training_minutes / 60, 2),
+        "training_by_type": training_by_type,
+        "avg_duration_per_session": round(total_training_minutes / training_days, 2) if training_days > 0 else 0,
+    }
+
+
+@router.get("/stats/health")
+async def get_health_stats() -> dict:
+    data = load_progress()
+    
+    metrics_data = [d.get("metrics") for d in data if d.get("metrics")]
+    
+    if not metrics_data:
+        return {"message": "No health data recorded yet"}
+    
+    avg_sleep = sum(m.get("sleep_quality", 0) for m in metrics_data) / len(metrics_data)
+    avg_energy = sum(m.get("energy_level", 0) for m in metrics_data) / len(metrics_data)
+    avg_motivation = sum(m.get("motivation", 0) for m in metrics_data) / len(metrics_data)
+    avg_anxiety = sum(m.get("social_anxiety", 0) for m in metrics_data) / len(metrics_data)
+    
+    social_interaction_days = sum(1 for m in metrics_data if m.get("social_interaction"))
+    morning_wood_count = sum(1 for m in metrics_data if m.get("morning_wood"))
+    total_wins = sum(m.get("win_count", 0) for m in metrics_data)
+    
+    return {
+        "days_tracked": len(metrics_data),
+        "avg_sleep_quality": round(avg_sleep, 2),
+        "avg_energy_level": round(avg_energy, 2),
+        "avg_motivation": round(avg_motivation, 2),
+        "avg_social_anxiety": round(avg_anxiety, 2),
+        "social_interaction_days": social_interaction_days,
+        "morning_wood_count": morning_wood_count,
+        "total_wins": total_wins,
+    }
+
+
+@router.get("/stats/heatmap/training")
+async def get_training_heatmap() -> dict:
+    from backend.models import HeatmapData
+    data = load_progress()
+    
+    training_data = {}
+    for entry in data:
+        date_str = entry.get("date", "")
+        training = entry.get("training")
+        if training and training.get("type") != "rest":
+            training_data[date_str] = training.get("duration_minutes", 0)
+    
+    return HeatmapData(data=training_data)
