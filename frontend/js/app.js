@@ -1,32 +1,16 @@
-const API_BASE = '/api';
+const DATA_BASE = './data';
 
 let progressData = [];
 let statsData = null;
-let todayProblems = [];
 
-async function fetchData(endpoint) {
+async function fetchData(filename) {
     try {
-        const response = await fetch(`${API_BASE}${endpoint}`);
+        const response = await fetch(`${DATA_BASE}/${filename}.json`);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return await response.json();
     } catch (error) {
-        console.error(`Error fetching ${endpoint}:`, error);
+        console.error(`Error fetching ${filename}:`, error);
         return null;
-    }
-}
-
-async function postData(endpoint, data) {
-    try {
-        const response = await fetch(`${API_BASE}${endpoint}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return await response.json();
-    } catch (error) {
-        console.error(`Error posting to ${endpoint}:`, error);
-        throw error;
     }
 }
 

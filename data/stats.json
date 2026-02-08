@@ -1,0 +1,29 @@
+{
+  "total_problems": 0,
+  "easy_count": 0,
+  "medium_count": 0,
+  "hard_count": 0,
+  "total_study_hours": 0,
+  "current_streak": 1,
+  "longest_streak": 1,
+  "topics_covered": [],
+  "avg_problems_per_day": 0,
+  "days_active": 1,
+  "training_stats": {
+    "training_days": 0,
+    "rest_days": 0,
+    "total_training_hours": 0,
+    "training_by_type": {},
+    "avg_duration_per_session": 0
+  },
+  "health_stats": {
+    "days_tracked": 1,
+    "avg_sleep_quality": 5,
+    "avg_energy_level": 5,
+    "avg_motivation": 7,
+    "avg_social_anxiety": 5,
+    "social_interaction_days": 1,
+    "morning_wood_count": 0,
+    "total_wins": 3
+  }
+}

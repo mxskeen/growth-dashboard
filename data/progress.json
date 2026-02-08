@@ -1,0 +1,26 @@
+[
+  {
+    "date": "2026-02-08",
+    "problems_solved": 0,
+    "problems": [],
+    "study_hours": 0,
+    "training": {
+      "type": "bodyweight",
+      "duration_minutes": 0,
+      "exercises": [],
+      "notes": "Setup day - created T-protocol"
+    },
+    "metrics": {
+      "sleep_quality": 5,
+      "energy_level": 5,
+      "motivation": 7,
+      "social_anxiety": 5,
+      "morning_wood": false,
+      "social_interaction": true,
+      "win_count": 3
+    },
+    "supplement_stack": ["Vitamin D3", "Magnesium"],
+    "notes": "Created testosterone optimization protocol. Committed dashboard changes.",
+    "mood": "productive"
+  }
+]
